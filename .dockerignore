@@ -1,0 +1,40 @@
+### All ###
+*
+
+### Exceptions ###
+!app
+!lib
+!configs
+!tool
+
+### Editors ###
+**/.vscode
+
+### env ###
+**/.env
+**/.env.*
+
+### macos ###
+**/.DS_Store
+
+### Git ###
+.git
+**/.gitignore
+
+### Python ###
+**/__pycache__
+**/.venv
+
+# Distribution / packaging
+**/*.egg-info
+**/*.egg
+
+### Node ###
+**/node_modules
+# Next.js
+**/.next
+
+### front-web ###
+app/front-web/shared/publicConfigType.ts
+### manager-web ###
+app/manager-web/shared/publicConfigType.ts

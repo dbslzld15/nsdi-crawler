@@ -1,0 +1,19 @@
+
+version: "3.3"
+volumes:
+  pgdata:
+services:
+  nsdi-crawler:
+    build:
+      context: .
+      dockerfile: Dockerfile-nsdi-crawler
+      args:
+        env: local
+    command: >
+      python manage.py run
+    volumes:
+      - ./app/nsdi-crawler/:/crawler/app/nsdi-crawler/
+      - ./lib/crawler-python-commons:/crawler/lib/crawler-python-commons
+      - ./lib/tanker-python-commons:/crawler/lib/tanker-python-commons
+    environment:
+      CRAWLER_ENVIRONMENT: local

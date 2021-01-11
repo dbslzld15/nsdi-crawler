@@ -1,0 +1,86 @@
+name: Lint
+
+on:
+  push:
+    paths:
+      - "app/**"
+      - "lib/**"
+
+jobs:
+  lint-nsdi-crawler:
+    name: Lint nsdi crawler
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up ssh for submodule
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Lint with flake8
+        env:
+          TARGET_ROOT: app/nsdi-crawler
+        run: |
+          pip install -U pip flake8
+          cd $TARGET_ROOT
+          flake8
+
+  lint-crawler-python-commons:
+    name: Lint crawler-python-commons package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up ssh for submodule
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Lint with flake8
+        env:
+          TARGET_ROOT: lib/crawler-python-commons
+        run: |
+          pip install -U pip flake8
+          cd $TARGET_ROOT
+          flake8
+
+  lint-tanker-python-commons:
+    name: Lint tanker-python-commons package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up ssh for submodule
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.5
+
+      - name: Lint with flake8
+        env:
+          TARGET_ROOT: lib/tanker-python-commons
+        run: |
+          pip install -U pip flake8
+          cd $TARGET_ROOT
+          flake8

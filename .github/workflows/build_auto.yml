@@ -1,0 +1,71 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - "release/**"
+      - "hotfix/**"
+      - "deploy/**"
+    tags:
+      - "**"
+
+jobs:
+  build-nsdi-crawler:
+    name: Build nsdi crawler
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up ssh for submodule
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout submodules
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Set up and expose slug versions of github variables to env
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          DOCKERFILE_NAME: Dockerfile-nsdi-crawler
+          ECR_REPOSITORY: nsdi-crawler
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          CI_PROJECT_DIR: ${{ github.workspace }}
+          CI_COMMIT_SHA: ${{ github.sha }}
+          CI_COMMIT_REF_SLUG: ${{ env.GITHUB_REF_SLUG }}
+        run: |
+          export IMAGE_URI=$ECR_REGISTRY/$ECR_REPOSITORY
+          export DOCKER_REF_IMAGE_NAME=$IMAGE_URI:$CI_COMMIT_REF_SLUG
+          export DOCKER_DEVELOP_IMAGE_NAME=$IMAGE_URI:develop
+          export DOCKER_IMAGE_NAME=$IMAGE_URI:$CI_COMMIT_SHA
+          docker pull $DOCKER_REF_IMAGE_NAME || true
+          docker pull $DOCKER_DEVELOP_IMAGE_NAME || true
+          docker build \
+            --cache-from $DOCKER_DEVELOP_IMAGE_NAME \
+            --cache-from $DOCKER_REF_IMAGE_NAME \
+            -f $CI_PROJECT_DIR/$DOCKERFILE_NAME \
+            -t $DOCKER_IMAGE_NAME \
+            $CI_PROJECT_DIR
+          docker tag $DOCKER_IMAGE_NAME $DOCKER_REF_IMAGE_NAME
+          docker push $DOCKER_IMAGE_NAME
+          docker push $DOCKER_REF_IMAGE_NAME

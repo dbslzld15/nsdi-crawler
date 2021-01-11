@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "nsdi-store"
+version = "0.1.0"
+description = "Store nsdi feature and use csv data"
+authors = ["Tanker <dev@tanker.fund>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+async-generator = "1.10"
+aiohttp = "3.6.2"
+bs4 = "0.0.1"
+beautifulsoup4 = "4.7.1"
+psycopg2-binary = "2.8.4"
+APSCheduler = "^3.6.3"
+click = "^7.1.2"
+psutil = "^5.7.3"
+lxml = "^4.6.1"
+pillow = "^7.1.2"
+flask = "1.1.2"
+python-dotenv = "^0.15.0"
+tqdm = "4.47.0"
+# Logging
+colorama = "^0.4.4"
+# Local
+tanker-commons = {develop = true,path = "../../lib/tanker-python-commons"}
+crawler-python-commons = {develop = true,path = "../../lib/crawler-python-commons"}
+loan-model = {develop = true,path = "../../lib/loan-model"}
+
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.8.4"
+autopep8 = "^1.5.4"
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

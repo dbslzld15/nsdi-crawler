@@ -1,0 +1,6 @@
+[submodule "loan-model"]
+	path = lib/loan-model
+	url = git@github.com:tanker-fund/loan-model.git
+[submodule "tanker-python-commons"]
+	path = lib/tanker-python-commons
+	url = git@github.com:tanker-fund/tanker-python-commons.git
