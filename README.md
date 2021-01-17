@@ -1,4 +1,4 @@
-## Taein 경매 Crawler 및 DB 적재 자동화
+## Nsdi Crawler 및 DB 적재 자동화
 
 ### 프로젝트 소개
 |구분|내용|
