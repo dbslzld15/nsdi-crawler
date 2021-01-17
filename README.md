@@ -1,4 +1,4 @@
-## Burn Young(소융대 홈페이지)
+## Taein 경매 Crawler 및 DB 적재 자동화
 
 ### 프로젝트 소개
 |구분|내용|
@@ -11,7 +11,6 @@
 |수상|없음|
 
 ### 프로젝트 개요
-
 - 해당 프로젝트의 경우 데이터를 수집하여 S3에 업로드하는 Crawler와 S3에 저장된 데이터를 DB에 저장하는 Store로 구성되어 있습니다.
 - Crawler의 경우 한달 간격으로 [토지이용계획정보](http://openapi.nsdi.go.kr/nsdi/eios/ServiceDetail.do?svcSe=F&svcId=F014)와 [토지특성정보](http://openapi.nsdi.go.kr/nsdi/eios/ServiceDetail.do?svcSe=F&svcId=F024) 에서 CSV 파일을 S3에 업로드합니다.
 - Store의 경우 S3에 업로드 된 CSV 파일을 파싱하여 DB에 Bulk Load 합니다.
